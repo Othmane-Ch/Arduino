@@ -24,6 +24,7 @@ void setup() {
   BTSerial.begin(9600); // Add this line to initialize the Bluetooth module
   pinMode(ENVELOPE_PIN, INPUT);
   FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUMLEDS);
+  String current = "Linear Flowing";
 
   for(int i = 0; i <= NUMLEDS; i++){
     brightness[i] = 0;
@@ -42,7 +43,24 @@ void setup() {
 
 void loop() {
   if (BTSerial.available()) {
-    analogVal = BTSerial.read(); // Replace the line "analogVal = analogRead(ENVELOPE_PIN);" with this line
+    String val = BTSerial.read();
+    switch (val){
+      case "Red" :
+          TODO : changer la couleur des leds en rouge
+          break;
+      case "Green":
+          TODO : changer la couleur des leds en vert
+          break;
+      case "Blue":
+        TODO : changer la couleur en bleu
+        break;
+      case "Rainbow":
+        TODO : faire varier la couleur
+        break;
+      default :
+        current = val;
+    }
+            
   }
 
   if(analogVal > SENSITIVITY)
@@ -56,12 +74,43 @@ void loop() {
   - Uncomment the function which you want to try and comment the others.
   - "LinearFlowing" is uncommented by default.          
 -----------------------------------------------------------*/
-
-   LinearFlowing();
-  // LinearReactive();
-  // BrightnessReactive();
-  // CentreProgressive();
-  // EdgeProgressive();
+  
+  switch(current){
+    case "Linear Flowing":
+      LinearFlowing();
+      break;
+    case "Linear Reactive":
+      LinearReactive();
+      break;
+    case "Brightness Reactive":
+      BrightnessReactive();
+      break;
+    case "Centre Progressive":
+      Centre Progressive();
+      break;
+    case "Edge Progressive":
+      EdgeProgressive();
+      break;
+    case "Random":
+      int r = rand() % 5;
+      switch (r){
+        case 0:
+          LinearFlowing();
+          break;
+        case 1:
+          LinearReactive();
+          break;
+        case 2:
+          BrightnessReactive();
+          break;
+        case 3:
+          Centre Progressive();
+          break;
+        case 4:
+          EdgeProgressive();
+          break;
+        }
+  }
   
   FastLED.show();
 }
